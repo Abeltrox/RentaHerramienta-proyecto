@@ -1,0 +1,17 @@
+# PostgreSQL listo para usar:  docker compose up -d
+services:
+  postgres:
+    image: postgres:16
+    container_name: renta-herramientas-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: renta_herramientas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "292620"
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

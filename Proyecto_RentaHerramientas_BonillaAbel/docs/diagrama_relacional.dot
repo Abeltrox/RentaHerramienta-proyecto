@@ -1,0 +1,101 @@
+digraph ER {
+  graph [rankdir=LR, fontname="Helvetica", bgcolor="white", pad=0.4, nodesep=0.5, ranksep=1.1, label="Plataforma de Renta de Herramientas — Diagrama relacional (PostgreSQL)", labelloc=t, fontsize=20];
+  node  [shape=plaintext, fontname="Helvetica", fontsize=11];
+  edge  [fontname="Helvetica", fontsize=10, color="#44556b", arrowsize=0.9];
+
+  usuarios [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#1f3a5f" colspan="2"><font color="white"><b>usuarios</b></font></td></tr>
+    <tr><td align="left"><b>PK</b> id</td><td align="left">BIGSERIAL</td></tr>
+    <tr><td align="left">nombre</td><td align="left">VARCHAR(120)</td></tr>
+    <tr><td align="left">email (UQ)</td><td align="left">VARCHAR(160)</td></tr>
+    <tr><td align="left">password (BCrypt)</td><td align="left">VARCHAR(100)</td></tr>
+    <tr><td align="left">telefono</td><td align="left">VARCHAR(30)</td></tr>
+    <tr><td align="left">rol</td><td align="left">ADMIN|PROVEEDOR|CLIENTE</td></tr>
+    <tr><td align="left">activo</td><td align="left">BOOLEAN</td></tr>
+    <tr><td align="left">fecha_creacion</td><td align="left">TIMESTAMP</td></tr></table>>];
+
+  proveedores [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#2f6f4f" colspan="2"><font color="white"><b>proveedores</b></font></td></tr>
+    <tr><td align="left"><b>PK/FK</b> id → usuarios</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left">empresa</td><td align="left">VARCHAR(150)</td></tr>
+    <tr><td align="left">nit (UQ)</td><td align="left">VARCHAR(30)</td></tr>
+    <tr><td align="left">direccion</td><td align="left">VARCHAR(200)</td></tr>
+    <tr><td align="left">ciudad</td><td align="left">VARCHAR(80)</td></tr></table>>];
+
+  clientes [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#2f6f4f" colspan="2"><font color="white"><b>clientes</b></font></td></tr>
+    <tr><td align="left"><b>PK/FK</b> id → usuarios</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left">documento (UQ)</td><td align="left">VARCHAR(30)</td></tr>
+    <tr><td align="left">direccion</td><td align="left">VARCHAR(200)</td></tr>
+    <tr><td align="left">ciudad</td><td align="left">VARCHAR(80)</td></tr></table>>];
+
+  categorias [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#7a4b1f" colspan="2"><font color="white"><b>categorias</b></font></td></tr>
+    <tr><td align="left"><b>PK</b> id</td><td align="left">BIGSERIAL</td></tr>
+    <tr><td align="left">nombre (UQ)</td><td align="left">VARCHAR(80)</td></tr>
+    <tr><td align="left">descripcion</td><td align="left">VARCHAR(300)</td></tr></table>>];
+
+  herramientas [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#7a4b1f" colspan="2"><font color="white"><b>herramientas</b></font></td></tr>
+    <tr><td align="left"><b>PK</b> id</td><td align="left">BIGSERIAL</td></tr>
+    <tr><td align="left"><b>FK</b> proveedor_id</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left"><b>FK</b> categoria_id</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left">nombre / marca</td><td align="left">VARCHAR</td></tr>
+    <tr><td align="left">descripcion</td><td align="left">VARCHAR(1000)</td></tr>
+    <tr><td align="left">precio_dia</td><td align="left">NUMERIC(12,2)</td></tr>
+    <tr><td align="left">estado</td><td align="left">DISPONIBLE|EN_MANTENIMIENTO|DANADA|INACTIVA</td></tr>
+    <tr><td align="left">imagen_url</td><td align="left">VARCHAR(300)</td></tr>
+    <tr><td align="left">reserva_automatica</td><td align="left">BOOLEAN</td></tr></table>>];
+
+  reservas [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#8a2f3f" colspan="2"><font color="white"><b>reservas</b></font></td></tr>
+    <tr><td align="left"><b>PK</b> id</td><td align="left">BIGSERIAL</td></tr>
+    <tr><td align="left"><b>FK</b> cliente_id</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left"><b>FK</b> herramienta_id</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left">fecha_inicio / fecha_fin</td><td align="left">DATE</td></tr>
+    <tr><td align="left">dias</td><td align="left">INTEGER</td></tr>
+    <tr><td align="left">precio_dia / total</td><td align="left">NUMERIC(12,2)</td></tr>
+    <tr><td align="left">estado</td><td align="left">PENDIENTE…DEVUELTA…VENCIDA</td></tr>
+    <tr><td align="left">fecha_entrega / devolucion</td><td align="left">TIMESTAMP</td></tr></table>>];
+
+  pagos [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#8a2f3f" colspan="2"><font color="white"><b>pagos</b></font></td></tr>
+    <tr><td align="left"><b>PK</b> id</td><td align="left">BIGSERIAL</td></tr>
+    <tr><td align="left"><b>FK</b> reserva_id (UQ)</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left">monto (con IVA)</td><td align="left">NUMERIC(12,2)</td></tr>
+    <tr><td align="left">metodo</td><td align="left">TARJETA|PSE|NEQUI</td></tr>
+    <tr><td align="left">estado</td><td align="left">APROBADO|RECHAZADO</td></tr>
+    <tr><td align="left">referencia (UQ)</td><td align="left">VARCHAR(60)</td></tr>
+    <tr><td align="left">fecha_pago</td><td align="left">TIMESTAMP</td></tr></table>>];
+
+  facturas [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#8a2f3f" colspan="2"><font color="white"><b>facturas</b></font></td></tr>
+    <tr><td align="left"><b>PK</b> id</td><td align="left">BIGSERIAL</td></tr>
+    <tr><td align="left">numero (UQ)</td><td align="left">VARCHAR(30)</td></tr>
+    <tr><td align="left"><b>FK</b> reserva_id (UQ)</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left"><b>FK</b> pago_id</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left">subtotal / iva / total</td><td align="left">NUMERIC(12,2)</td></tr>
+    <tr><td align="left">fecha_emision</td><td align="left">TIMESTAMP</td></tr></table>>];
+
+  reportes_danio [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#5b3f8a" colspan="2"><font color="white"><b>reportes_danio</b></font></td></tr>
+    <tr><td align="left"><b>PK</b> id</td><td align="left">BIGSERIAL</td></tr>
+    <tr><td align="left"><b>FK</b> reserva_id</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left"><b>FK</b> herramienta_id</td><td align="left">BIGINT</td></tr>
+    <tr><td align="left">descripcion</td><td align="left">VARCHAR(500)</td></tr>
+    <tr><td align="left">costo_estimado</td><td align="left">NUMERIC(12,2)</td></tr>
+    <tr><td align="left">estado</td><td align="left">REPORTADO|EN_REVISION|RESUELTO</td></tr>
+    <tr><td align="left">fecha_reporte / resolucion</td><td align="left">TIMESTAMP</td></tr></table>>];
+
+  usuarios    -> proveedores   [label="1 : 0..1", arrowhead=none, arrowtail=none];
+  usuarios    -> clientes      [label="1 : 0..1", arrowhead=none];
+  proveedores -> herramientas  [label="1 : N", arrowhead=crow];
+  categorias  -> herramientas  [label="1 : N", arrowhead=crow];
+  clientes    -> reservas      [label="1 : N", arrowhead=crow];
+  herramientas-> reservas      [label="1 : N", arrowhead=crow];
+  reservas    -> pagos         [label="1 : 1", arrowhead=none];
+  reservas    -> facturas      [label="1 : 1", arrowhead=none];
+  pagos       -> facturas      [label="1 : 1", arrowhead=none];
+  reservas    -> reportes_danio[label="1 : N", arrowhead=crow];
+  herramientas-> reportes_danio[label="1 : N", arrowhead=crow];
+}

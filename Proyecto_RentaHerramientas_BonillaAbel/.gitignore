@@ -1,0 +1,9 @@
+target/
+.idea/
+.vscode/
+*.iml
+*.log
+.env
+uploads/*
+!uploads/.gitkeep
+HELP.md
