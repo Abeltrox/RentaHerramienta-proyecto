@@ -83,7 +83,8 @@ docker compose up -d
 #    (opción B: PostgreSQL instalado)  psql -U postgres -c "CREATE DATABASE renta_herramientas;"
 
 # 3. Compilar todos los módulos y arrancar (Maven descarga las dependencias)
-mvn clean package -DskipTests
+set DB_URL=jdbc:postgresql://localhost:5434/renta_herramientas
+set DB_PASSWORD=292620
 java -jar platform/target/renta-herramientas-1.0.0.jar
 ```
 

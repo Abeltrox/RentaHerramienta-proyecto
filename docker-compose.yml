@@ -7,9 +7,9 @@ services:
     environment:
       POSTGRES_DB: renta_herramientas
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "292620"
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "5434:5432"
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
