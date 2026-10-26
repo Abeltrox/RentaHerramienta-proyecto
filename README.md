@@ -102,7 +102,7 @@ Al arrancar, **Flyway crea las tablas y carga los datos de prueba** automáticam
 |---|---|---|
 | Administrador | `admin@rentaherramientas.com` | `Admin123*` |
 | Proveedor (01 a 22) | `proveedor01@rentaherramientas.com` | `Proveedor123*` |
-| Cliente (01 a 22) | `cliente01@rentaherramientas.com` | `Cliente123*` |
+| Cliente (01 a 22) | `abel@gmail.com` | `12345678` |
 
 ## Configuración (`application.properties`)
 
